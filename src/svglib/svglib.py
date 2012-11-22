@@ -1254,6 +1254,22 @@ class Svg2RlgShapeConverter(SvgShapeConverter):
                 svgAttr = ac.findAttr(node, "fill") or "black"
                 setattr(shape, "fillColor", ac.convertColor(svgAttr))
 
+def _svg2rlg(svg_string):
+    "Convert an SVG string to an RLG Drawing object."
+    # load SVG file
+    try:
+        doc = xml.dom.minidom.parseString(svg_string)
+        svg = doc.documentElement
+    except:
+        print "Failed to load input file!"
+        return
+
+    # convert to a RLG drawing
+    svgRenderer = SvgRenderer()
+    svgRenderer.render(svg)
+    drawing = svgRenderer.finish()
+        
+    return drawing
 
 def svg2rlg(path):
     "Convert an SVG file to an RLG Drawing object."
